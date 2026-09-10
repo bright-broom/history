@@ -6,7 +6,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import type { Year, Month } from '@/domain/types';
+import type { Month } from '@/domain/types';
 import { t } from '@/config/i18n';
 import { parseYear } from '@/domain/validation/validators';
 import {
@@ -14,7 +14,7 @@ import {
   getYearData,
   getAvailableMonths,
   getAllMonthsForYear,
-} from '@/services/history-service';
+} from '@/server/history';
 import {
   PageContainer,
   PageHeader,

@@ -48,7 +48,7 @@ export function isValidDateString(value: unknown): value is DateString {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
   if (!regex.test(value)) return false;
   const date = new Date(value);
-  return !isNaN(date.getTime());
+  return !isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
 // ============================================
@@ -61,8 +61,8 @@ export function isValidDateString(value: unknown): value is DateString {
  * @returns 変換結果
  */
 export function parseYear(value: string): Result<Year> {
-  const parsed = parseInt(value, 10);
-  if (isNaN(parsed)) {
+  const parsed = Number(value);
+  if (!/^\d+$/.test(value)) {
     return {
       success: false,
       error: { code: 'INVALID_FORMAT', message: '年は数値である必要があります' },
@@ -86,8 +86,8 @@ export function parseYear(value: string): Result<Year> {
  * @returns 変換結果
  */
 export function parseMonth(value: string): Result<Month> {
-  const parsed = parseInt(value, 10);
-  if (isNaN(parsed)) {
+  const parsed = Number(value);
+  if (!/^\d+$/.test(value)) {
     return {
       success: false,
       error: { code: 'INVALID_FORMAT', message: '月は数値である必要があります' },

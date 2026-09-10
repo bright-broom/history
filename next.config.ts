@@ -59,6 +59,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: { '/*': ['./src/data/**/*.yaml'] },
   // セキュリティヘッダーを全ルートに適用
   async headers() {
     return [

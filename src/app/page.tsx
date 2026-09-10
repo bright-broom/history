@@ -5,7 +5,7 @@
 
 import type { Year } from '@/domain/types';
 import { t } from '@/config/i18n';
-import { getAvailableYears, getAllEventsForYear } from '@/services/history-service';
+import { getAvailableYears, getAllEventsForYear } from '@/server/history';
 import {
   PageContainer,
   PageHeader,

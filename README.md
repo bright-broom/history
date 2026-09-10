@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 世界史年表
 
-## Getting Started
+1800–2025 年の歴史を、年・月ごとに閲覧する Next.js App Router アプリです。
+歴史データは `src/data/{year}/{year}.yaml` と `{year}-{month:02}.yaml` で管理します。
 
-First, run the development server:
+## 開発
 
-```bash
+Node.js 22 LTS と npm を使用します。依存関係の正本は `package-lock.json` です。
+
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 検証
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run check-all  # lint・型チェック・回帰テスト・全カタログのスキーマ検証
+npm run build     # 本番ビルドと静的ページ生成
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+CI は push / pull request 時に同じ検証とビルドを実行します。
+ビルド時は `next/font/google` のフォント取得のため外部ネットワークが必要です。
 
-## Learn More
+## アーキテクチャ
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app` / `src/components`: ルーティング・画面表示。
+- `src/server/history.ts`: サーバー専用の組み立て箇所。サービスとファイル実装を接続。
+- `src/services`: ストレージを注入して利用するユースケースと統計計算。
+- `src/domain`: 型・検証・エラー・ストレージのインターフェース。
+- `src/infrastructure`: YAML ファイル実装と、インスタンスごとのメモリキャッシュ。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+サービスは具体的なファイル実装を import しません。画面は `@/server/history` を通じてデータを取得します。
+サーバー用モジュールのクライアントへの取り込みは `server-only`、ドメイン／サービスの逆向き依存は ESLint で検出します。
+[設計判断とトレードオフ](docs/adr/0001-history-data-boundaries.md)を参照してください。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## データの更新
 
-## Deploy on Vercel
+年ディレクトリは4桁、月ファイルは年と2桁の月を使用します。
+YAML の `year` / `month` とイベント日付はファイルパスと一致させます。
+`related_countries` は省略時に空配列、`sources` は任意の文字列配列です。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+追加・編集後に `npm run validate:data` と `npm run build` を実行し、再デプロイしてください。
+現在の検証は形式・日付・配置の整合性を対象とし、歴史的記述の正確性は別途レビューが必要です。
+主要イベントは概要表示用で、件数には月別イベントだけを数えます。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+存在しない年／月の文書は `null`（画面では404）ですが、不正な YAML・権限エラー・データルートの欠落は例外です。
+キャッシュはプロセス内・リポジトリインスタンス単位、TTL 10分・最大512件です。
+静的生成ページの更新はこの TTL では行われません。Git 管理データをビルド・デプロイする運用を前提にしています。

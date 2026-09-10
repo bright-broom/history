@@ -12,7 +12,7 @@ import {
   getAvailableYears,
   getAvailableMonths,
   getMonthData,
-} from '@/services/history-service';
+} from '@/server/history';
 import {
   PageContainer,
   PageHeader,

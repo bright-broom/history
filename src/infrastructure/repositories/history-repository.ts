@@ -1,335 +1,119 @@
-/**
- * 歴史データリポジトリ
- * ファイルシステムからのデータ読み込みを抽象化
- * @module infrastructure/repositories/history-repository
- */
+import 'server-only';
 
-import { readFile, readdir } from 'fs/promises';
-import { join } from 'path';
+import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { parse } from 'yaml';
-
+import { z } from 'zod';
 import { DATA_DIR_PATH, FILE_PATTERNS } from '@/config/constants';
+import type { IHistoryRepository } from '@/domain/repositories/history-repository';
 import type { Year, Month, HistoryEvent, MonthData, YearData } from '@/domain/types';
-import { monthDataSchema, yearDataSchema } from '@/domain/validation/schemas';
-import { isValidYear, isValidMonth, createDateString } from '@/domain/validation/validators';
-import { withCache, cacheKeys } from '@/infrastructure/cache';
-import { logger } from '@/infrastructure/logger';
-import {
-  isSafeString,
-  sanitizeString,
-  isSafeStringArray,
-  sanitizeStringArray,
-  isRecord,
-  isRecordArray,
-} from '@/infrastructure/security';
+import { DataLoadError, DataParseError } from '@/domain/errors';
+import { monthDataSchema, yearDataSchema, type HistoryEventOutput } from '@/domain/validation/schemas';
+import { isValidYear, isValidMonth, createDateString, assertYear, assertMonth } from '@/domain/validation/validators';
+import { AsyncCache } from '@/infrastructure/cache';
 
-/** データディレクトリの絶対パス */
-const DATA_DIR = join(process.cwd(), ...DATA_DIR_PATH);
-
-/**
- * 型安全なプロパティ取得
- */
-function getStringProp(obj: Record<string, unknown>, key: string): string {
-  const value = obj[key];
-  if (!isSafeString(value)) return '';
-  return sanitizeString(value);
+function isMissing(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT';
 }
 
-/**
- * 型安全な文字列配列プロパティ取得
- */
-function getStringArrayProp(obj: Record<string, unknown>, key: string): string[] {
-  const value = obj[key];
-  if (isSafeStringArray(value)) return value;
-  return sanitizeStringArray(value);
-}
-
-/**
- * 型安全なオプショナル文字列プロパティ取得
- */
-function getOptionalStringProp(obj: Record<string, unknown>, key: string): string | undefined {
-  const value = obj[key];
-  if (value === undefined || value === null) return undefined;
-  if (!isSafeString(value)) return undefined;
-  return sanitizeString(value);
-}
-
-/**
- * YAMLデータを正規化してドメイン型に変換
- * 型安全性を強化
- */
-function normalizeHistoryEvent(raw: unknown): HistoryEvent | null {
-  if (!isRecord(raw)) {
-    logger.warn('Invalid event data: not an object');
-    return null;
-  }
-
-  const date = getStringProp(raw, 'date');
-  const title = getStringProp(raw, 'title');
-  const category = getStringProp(raw, 'category');
-  const description = getStringProp(raw, 'description');
-
-  // 必須フィールドの検証
-  if (!date || !title || !category || !description) {
-    logger.warn('Invalid event data: missing required fields', {
-      hasDate: !!date,
-      hasTitle: !!title,
-      hasCategory: !!category,
-      hasDescription: !!description,
-    });
-    return null;
-  }
-
+function toEvent(event: HistoryEventOutput): HistoryEvent {
   return {
-    date: createDateString(date),
-    title,
-    category,
-    description,
-    relatedCountries: getStringArrayProp(raw, 'related_countries'),
-    sources: getOptionalStringProp(raw, 'sources')
-      ? getStringArrayProp(raw, 'sources')
-      : undefined,
+    date: createDateString(event.date),
+    title: event.title,
+    category: event.category,
+    description: event.description,
+    relatedCountries: event.related_countries,
+    sources: event.sources,
   };
 }
 
-/**
- * 月別データを正規化
- */
-function normalizeMonthData(raw: unknown, year: Year, month: Month): MonthData | null {
-  if (!isRecord(raw)) {
-    logger.warn('Invalid month data: not an object');
-    return null;
-  }
-
-  const eventsRaw = raw.events;
-  const events: HistoryEvent[] = [];
-
-  if (isRecordArray(eventsRaw)) {
-    for (const eventRaw of eventsRaw) {
-      const event = normalizeHistoryEvent(eventRaw);
-      if (event) events.push(event);
-    }
-  }
-
-  return {
-    year,
-    month,
-    events,
-  };
-}
-
-/**
- * 年別データを正規化
- */
-function normalizeYearData(raw: unknown, year: Year): YearData | null {
-  if (!isRecord(raw)) {
-    logger.warn('Invalid year data: not an object');
-    return null;
-  }
-
-  const majorEventsRaw = raw.majorEvents;
-  let majorEvents: HistoryEvent[] | undefined;
-
-  if (isRecordArray(majorEventsRaw)) {
-    majorEvents = [];
-    for (const eventRaw of majorEventsRaw) {
-      const event = normalizeHistoryEvent(eventRaw);
-      if (event) majorEvents.push(event);
-    }
-  }
-
-  return {
-    year,
-    summary: getOptionalStringProp(raw, 'summary'),
-    majorEvents: majorEvents?.length ? majorEvents : undefined,
-  };
-}
-
-/**
- * 歴史データリポジトリインターフェース
- */
-export interface IHistoryRepository {
-  getAvailableYears(): Promise<Year[]>;
-  getAvailableMonths(year: Year): Promise<Month[]>;
-  getYearData(year: Year): Promise<YearData | null>;
-  getMonthData(year: Year, month: Month): Promise<MonthData | null>;
-  getAllMonthsForYear(year: Year): Promise<MonthData[]>;
-  getAllEventsForYear(year: Year): Promise<HistoryEvent[]>;
-}
-
-/**
- * ファイルシステムベースの歴史データリポジトリ実装
- */
+/** YAML is validated once at the storage boundary, before domain mapping or caching. */
 export class FileSystemHistoryRepository implements IHistoryRepository {
-  private readonly dataDir: string;
+  private readonly cache = new AsyncCache();
 
-  constructor(dataDir: string = DATA_DIR) {
-    this.dataDir = dataDir;
+  constructor(private readonly dataDir = join(process.cwd(), ...DATA_DIR_PATH)) {}
+
+  private async readDocument<T>(path: string, schema: z.ZodType<T>): Promise<T | null> {
+    let content: string;
+    try {
+      content = await readFile(path, 'utf8');
+    } catch (error) {
+      if (isMissing(error)) return null;
+      throw new DataLoadError('Failed to read history data', path, error instanceof Error ? error : undefined);
+    }
+    try {
+      return schema.parse(parse(content));
+    } catch (error) {
+      throw new DataParseError('Invalid history data', path, error instanceof Error ? error : undefined);
+    }
   }
 
-  /**
-   * 利用可能な年のリストを取得
-   */
   async getAvailableYears(): Promise<Year[]> {
-    return withCache(cacheKeys.years(), async () => {
+    return this.cache.get('years', async () => {
       try {
         const entries = await readdir(this.dataDir, { withFileTypes: true });
-        const years = entries
-          .filter((entry) => entry.isDirectory())
-          .map((entry) => parseInt(entry.name, 10))
-          .filter(isValidYear)
-          .sort((a, b) => a - b);
-
-        logger.debug('Loaded available years', { count: years.length });
-        return years;
+        return entries.filter((entry) => entry.isDirectory() && /^\d{4}$/.test(entry.name))
+          .map((entry) => Number(entry.name)).filter(isValidYear).sort((a, b) => a - b);
       } catch (error) {
-        logger.error('Failed to read years directory', error);
-        return [];
+        // A missing root means a deployment/configuration error, not an empty catalog.
+        throw new DataLoadError('Failed to read history directory', this.dataDir, error instanceof Error ? error : undefined);
       }
     });
   }
 
-  /**
-   * 指定した年の利用可能な月のリストを取得
-   */
   async getAvailableMonths(year: Year): Promise<Month[]> {
-    return withCache(cacheKeys.availableMonths(year), async () => {
+    assertYear(year);
+    return this.cache.get(`months:${year}`, async () => {
+      const path = join(this.dataDir, String(year));
       try {
-        const yearDir = join(this.dataDir, year.toString());
-        const entries = await readdir(yearDir, { withFileTypes: true });
-
-        const months = entries
-          .filter((entry) => {
-            if (!entry.isFile()) return false;
-            return FILE_PATTERNS.MONTH_FILE_REGEX.test(entry.name);
-          })
-          .map((entry) => {
-            const match = entry.name.match(FILE_PATTERNS.MONTH_FILE_REGEX);
-            return match ? parseInt(match[1], 10) : null;
-          })
-          .filter((month): month is Month => month !== null && isValidMonth(month))
-          .sort((a, b) => a - b);
-
-        logger.debug('Loaded available months', { year, count: months.length });
-        return months;
+        const entries = await readdir(path, { withFileTypes: true });
+        const pattern = new RegExp(`^${year}-(\\d{2})\\.yaml$`);
+        return entries.filter((entry) => entry.isFile() && pattern.test(entry.name))
+          .map((entry) => Number(entry.name.match(pattern)![1]))
+          .filter(isValidMonth).sort((a, b) => a - b);
       } catch (error) {
-        logger.error('Failed to read months directory', error, { year });
-        return [];
+        if (isMissing(error)) return [];
+        throw new DataLoadError('Failed to read month directory', path, error instanceof Error ? error : undefined);
       }
     });
   }
 
-  /**
-   * 年別の概要データを取得
-   */
   async getYearData(year: Year): Promise<YearData | null> {
-    return withCache(cacheKeys.yearData(year), async () => {
-      try {
-        const filePath = join(this.dataDir, year.toString(), FILE_PATTERNS.YEAR_SUMMARY(year));
-        const fileContent = await readFile(filePath, 'utf-8');
-        const rawData = parse(fileContent);
-
-        // スキーマバリデーション
-        const validation = yearDataSchema.safeParse(rawData);
-        if (!validation.success) {
-          logger.warn('Year data validation failed', {
-            year,
-            issues: validation.error.issues.length,
-          });
-        }
-
-        const normalized = normalizeYearData(rawData, year);
-        if (normalized) {
-          logger.debug('Loaded year data', { year });
-        }
-        return normalized;
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-          return null;
-        }
-        logger.error('Failed to load year data', error, { year });
-        return null;
+    assertYear(year);
+    return this.cache.get(`year:${year}`, async () => {
+      const path = join(this.dataDir, String(year), FILE_PATTERNS.YEAR_SUMMARY(year));
+      const data = await this.readDocument(path, yearDataSchema);
+      if (!data) return null;
+      if (data.year !== year || data.majorEvents?.some((event) => !event.date.startsWith(`${year}-`))) {
+        throw new DataParseError('Year data does not match its path', path);
       }
+      return { year, summary: data.summary, majorEvents: data.majorEvents?.map(toEvent) };
     });
   }
 
-  /**
-   * 月別の詳細データを取得
-   */
   async getMonthData(year: Year, month: Month): Promise<MonthData | null> {
-    return withCache(cacheKeys.monthData(year, month), async () => {
-      try {
-        const filePath = join(
-          this.dataDir,
-          year.toString(),
-          FILE_PATTERNS.MONTH_DATA(year, month)
-        );
-        const fileContent = await readFile(filePath, 'utf-8');
-        const rawData = parse(fileContent);
-
-        // スキーマバリデーション
-        const validation = monthDataSchema.safeParse(rawData);
-        if (!validation.success) {
-          logger.warn('Month data validation failed', {
-            year,
-            month,
-            issues: validation.error.issues.length,
-          });
-        }
-
-        const normalized = normalizeMonthData(rawData, year, month);
-        if (normalized) {
-          logger.debug('Loaded month data', { year, month, eventCount: normalized.events.length });
-        }
-        return normalized;
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-          return null;
-        }
-        logger.error('Failed to load month data', error, { year, month });
-        return null;
+    assertYear(year);
+    assertMonth(month);
+    return this.cache.get(`month:${year}:${month}`, async () => {
+      const path = join(this.dataDir, String(year), FILE_PATTERNS.MONTH_DATA(year, month));
+      const data = await this.readDocument(path, monthDataSchema);
+      if (!data) return null;
+      const prefix = `${year}-${String(month).padStart(2, '0')}-`;
+      if (data.year !== year || data.month !== month || data.events.some((event) => !event.date.startsWith(prefix))) {
+        throw new DataParseError('Month data does not match its path', path);
       }
+      return { year, month, events: data.events.map(toEvent) };
     });
   }
 
-  /**
-   * 指定した年の全月別データを取得
-   */
   async getAllMonthsForYear(year: Year): Promise<MonthData[]> {
     const months = await this.getAvailableMonths(year);
-    const dataPromises = months.map((month) => this.getMonthData(year, month));
-    const results = await Promise.all(dataPromises);
+    const results = await Promise.all(months.map((month) => this.getMonthData(year, month)));
     return results.filter((data): data is MonthData => data !== null);
   }
 
-  /**
-   * 指定した年の全イベントを取得（日付順）
-   */
   async getAllEventsForYear(year: Year): Promise<HistoryEvent[]> {
-    const monthDataList = await this.getAllMonthsForYear(year);
-    const allEvents = monthDataList.flatMap((monthData) => monthData.events);
-    return allEvents.sort((a, b) => a.date.localeCompare(b.date));
+    const months = await this.getAllMonthsForYear(year);
+    return months.flatMap((month) => month.events).sort((a, b) => a.date.localeCompare(b.date));
   }
-}
-
-/**
- * デフォルトリポジトリインスタンス（シングルトン）
- */
-let defaultRepository: IHistoryRepository | null = null;
-
-/**
- * デフォルトリポジトリを取得
- */
-export function getHistoryRepository(): IHistoryRepository {
-  if (!defaultRepository) {
-    defaultRepository = new FileSystemHistoryRepository();
-  }
-  return defaultRepository;
-}
-
-/**
- * テスト用: リポジトリをリセット
- */
-export function resetHistoryRepository(): void {
-  defaultRepository = null;
 }

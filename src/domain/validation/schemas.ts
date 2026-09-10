@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import { isValidDateString } from './validators';
 import { YEAR_RANGE, MONTH_RANGE, EVENT_CATEGORIES } from '@/config/constants';
 
 // ============================================
@@ -34,10 +35,7 @@ export const monthSchema = z
 export const dateStringSchema = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, '日付はYYYY-MM-DD形式である必要があります')
-  .refine((date) => {
-    const parsed = new Date(date);
-    return !isNaN(parsed.getTime());
-  }, '有効な日付である必要があります');
+  .refine(isValidDateString, '有効な日付である必要があります');
 
 /**
  * イベントカテゴリのスキーマ
