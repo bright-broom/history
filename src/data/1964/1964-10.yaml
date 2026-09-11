@@ -4,25 +4,22 @@ events:
   - date: "1964-10-01"
     title: "東海道新幹線開業"
     category: "科学・技術"
-    description: "東京〜新大阪間を結ぶ東海道新幹線が開業。世界初の高速鉄道として、最高時速210kmで運行を開始した。東京オリンピック開幕に合わせての開業であった。"
+    description: "東京と新大阪を結ぶ東海道新幹線が開業した。0系車両が使われ、開業時の最速所要時間は4時間だった。"
     related_countries: ["日本"]
     sources:
-      - "新幹線開業記録"
-      - "JR東海資料"
-
+      - "JR東海「東海道新幹線 開業60周年にあたって」 — https://jr-central.co.jp/news/release/_pdf/000043174.pdf"
+      - "JR東海「新幹線の歩み」 — https://recommend.jr-central.co.jp/gooddayexpress/history/"
   - date: "1964-10-10"
     title: "東京オリンピック開会"
     category: "文化"
-    description: "第18回夏季オリンピック東京大会が開幕。アジアで初めて開催されたオリンピックであり、93カ国・地域から5,151人の選手が参加した。"
+    description: "第18回オリンピック競技大会が東京で開幕した。アジア初のオリンピックで、93の国と地域が参加した。"
     related_countries: ["日本"]
     sources:
-      - "東京オリンピック公式報告書"
-      - "IOC記録"
-
+      - "日本オリンピック委員会「東京オリンピック1964」 — https://www.joc.or.jp/past_games/tokyo1964/"
   - date: "1964-10-24"
     title: "東京オリンピック閉会"
     category: "文化"
-    description: "東京オリンピックが閉幕。日本は金メダル16個を獲得し、国別で3位となった。戦後日本の復興を世界に示す大会となった。"
+    description: "10月10日に開幕した東京オリンピックが閉会した。日本代表は大会を通じて金16、銀5、銅8のメダルを獲得した。"
     related_countries: ["日本"]
     sources:
-      - "東京オリンピック公式報告書"
+      - "日本オリンピック委員会「東京オリンピック1964」 — https://www.joc.or.jp/past_games/tokyo1964/"

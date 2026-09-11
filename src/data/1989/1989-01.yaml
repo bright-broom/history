@@ -2,10 +2,17 @@ month: 1
 year: 1989
 events:
   - date: "1989-01-07"
-    title: "昭和天皇崩御・平成改元"
+    title: "昭和天皇崩御・皇位継承"
     category: "政治・経済"
-    description: "昭和天皇が崩御され、皇太子明仁親王が即位。元号が昭和から平成に改められた。62年余り続いた昭和時代が終わりを告げた。"
+    description: "昭和天皇が崩御し、皇太子明仁親王が皇位を継承した。同日に元号を平成とする政令が決定されたが、施行は翌1月8日だった。"
     related_countries: ["日本"]
     sources:
-      - "宮内庁記録"
-      - "日本近現代史"
+      - "国立公文書館「元号を改める政令」 — https://www.archives.go.jp/exhibition/digital/gozaii/contents/25.html"
+      - "宮内庁「天皇皇后両陛下のご日程・平成元年1月～3月」 — https://www.kunaicho.go.jp/activity/gonittei/01/h01/gonitei-h01-01.html"
+  - date: "1989-01-08"
+    title: "平成改元"
+    category: "政治・経済"
+    description: "元号を平成とする政令が施行され、平成元年が始まった。政令は前日の1月7日に決定・公布され、翌日から施行すると定められていた。"
+    related_countries: ["日本"]
+    sources:
+      - "国立公文書館「元号を改める政令」 — https://www.archives.go.jp/exhibition/digital/gozaii/contents/25.html"

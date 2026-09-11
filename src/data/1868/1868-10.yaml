@@ -1,0 +1,11 @@
+month: 10
+year: 1868
+events:
+  - date: "1868-10-23"
+    title: "明治改元"
+    category: "政治・経済"
+    description: "元号を慶応から明治に改め、一人の天皇の在位中は元号を変えない一世一元の制を定めた。旧暦の慶応4年9月8日は、新暦では1868年10月23日にあたる。"
+    related_countries: ["日本"]
+    sources:
+      - "国立国会図書館「1860年代以前の日記より」 — https://www.ndl.go.jp/nikki/timeline/1860/"
+      - "国立国会図書館レファレンス協同データベース「明治に改元したのは何月何日か」（福岡市総合図書館） — https://crd.ndl.go.jp/reference/entry/index.php?id=1000255208&page=ref_view"

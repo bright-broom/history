@@ -4,8 +4,7 @@ events:
   - date: "1989-11-09"
     title: "ベルリンの壁崩壊"
     category: "政治・経済"
-    description: "東ドイツ政府が国境開放を発表し、ベルリンの壁が事実上崩壊。東西冷戦の象徴であった壁が28年ぶりに開放され、冷戦終結への大きな一歩となった。"
-    related_countries: ["ドイツ", "アメリカ", "ソ連"]
+    description: "東ドイツの出国・旅行規制に関する発表を受け、ベルリンの検問所に大勢の人々が集まった。その夜に検問所が開かれ、人々が東西を往来した。「壁崩壊」は、この国境開放を指す。"
+    related_countries: ["ドイツ","アメリカ","ソ連"]
     sources:
-      - "冷戦史"
-      - "ドイツ統一記録"
+      - "ドイツ連邦政府「Die Mauer ist offen!」 — https://www.bundesregierung.de/breg-de/schwerpunkte/deutsche-einheit/die-mauer-ist-offen--403858"

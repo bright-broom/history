@@ -2,17 +2,16 @@ month: 1
 year: 2020
 events:
   - date: "2020-01-16"
-    title: "日本国内初の新型コロナウイルス感染確認"
+    title: "国内初の新型コロナウイルス感染確認を公表"
     category: "社会"
-    description: "神奈川県在住の中国籍男性が新型コロナウイルスに感染していることが確認された。日本国内で初めての感染確認となった。"
-    related_countries: ["日本", "中国"]
+    description: "厚生労働省が国内初の新型コロナウイルス関連肺炎患者を公表した。武漢市への滞在歴があり、神奈川県内の医療機関から報告された患者で、検査で陽性と判明したのは前日の1月15日だった。"
+    related_countries: ["日本","中国"]
     sources:
-      - "厚生労働省発表"
-
+      - "厚生労働省「新型コロナウイルスに関連した肺炎の患者の発生について」2020年1月16日（PDF 3–4ページ） — https://www.mhlw.go.jp/content/10900000/000587020.pdf"
   - date: "2020-01-30"
-    title: "WHOが緊急事態宣言"
+    title: "WHOが国際的な公衆衛生上の緊急事態を宣言"
     category: "社会"
-    description: "世界保健機関（WHO）が新型コロナウイルスの感染拡大を「国際的に懸念される公衆衛生上の緊急事態」と宣言した。"
+    description: "WHO事務局長が新型コロナウイルスの感染拡大を「国際的に懸念される公衆衛生上の緊急事態（PHEIC）」と宣言した。日付はWHOが発表したジュネーブの現地日付。"
     related_countries: ["国際機関"]
     sources:
-      - "WHO声明"
+      - "WHO「Timeline of WHO’s response to COVID-19」 — https://www.who.int/emergencies/diseases/novel-coronavirus-2019/interactive-timeline/"

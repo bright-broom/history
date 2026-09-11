@@ -2,10 +2,9 @@ month: 8
 year: 1894
 events:
   - date: "1894-08-01"
-    title: "日清戦争開戦"
+    title: "日清両国が宣戦布告"
     category: "戦争・紛争"
-    description: "日本と清国の間で戦争が正式に宣戦布告された。朝鮮半島の支配権をめぐる両国の対立が武力衝突へと発展した。"
-    related_countries: ["日本", "中国", "朝鮮"]
+    description: "日本と清国が互いに宣戦を布告した。日清間の戦闘はこれに先立つ7月25日の豊島沖海戦で始まっており、宣戦布告日と戦闘開始日は異なる。"
+    related_countries: ["日本","中国","朝鮮"]
     sources:
-      - "日清戦争史"
-      - "近代日本外交史"
+      - "アジア歴史資料センター「日清戦争とは・宣戦布告」 — https://www.jacar.go.jp/exhibition/jacarbl-fsjwar-j/smart/about/p002.html"

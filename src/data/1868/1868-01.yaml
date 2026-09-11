@@ -4,15 +4,16 @@ events:
   - date: "1868-01-03"
     title: "王政復古の大号令"
     category: "政治・経済"
-    description: "明治天皇により王政復古の大号令が発せられ、江戸幕府の廃止と新政府の樹立が宣言された。これにより約260年続いた徳川幕府による統治が終わりを告げた。"
+    description: "幕府の廃止と天皇を中心とする新政府の成立が宣言された。総裁・議定・参与の三職を置く新たな政治体制が示された。旧暦では慶応3年12月9日。"
     related_countries: ["日本"]
     sources:
-      - "明治維新史"
-
+      - "国立国会図書館「1860年代以前の日記より」 — https://www.ndl.go.jp/nikki/timeline/1860/"
+      - "アジア歴史資料センター「王政復古の大号令」 — https://www.jacar.go.jp/learning/term.html?uid=Y20C100012"
   - date: "1868-01-27"
     title: "鳥羽・伏見の戦い"
     category: "戦争・紛争"
-    description: "旧幕府軍と新政府軍の間で戊辰戦争の緒戦となる戦闘が勃発。新政府軍が勝利し、徳川慶喜は江戸へ退却した。"
+    description: "京都南部の鳥羽・伏見で旧幕府側と薩摩・長州を中心とする新政府側が戦い、戊辰戦争が始まった。旧幕府側は敗退した。開戦日は旧暦の慶応4年1月3日にあたる。"
     related_countries: ["日本"]
     sources:
-      - "戊辰戦争史"
+      - "京都市公式観光Navi「此付近鳥羽伏見戦跡」 — https://ja.kyoto.travel/tourism/single02.php?category_id=9&tourism_id=408"
+      - "国立国会図書館「1860年代以前の日記より」 — https://www.ndl.go.jp/nikki/timeline/1860/"

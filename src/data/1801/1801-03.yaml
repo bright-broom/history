@@ -1,0 +1,11 @@
+month: 3
+year: 1801
+events:
+  - date: "1801-03-24"
+    title: "ロシア、アレクサンドル1世が即位"
+    category: "政治・経済"
+    description: "パーヴェル1世の死後、アレクサンドル1世がロシア皇帝に即位した。日付はグレゴリオ暦で、当時のロシアのユリウス暦では1801年3月12日にあたる。"
+    related_countries: ["ロシア"]
+    sources:
+      - "ロシア大統領図書館「アレクサンドル1世の人物像」 — https://www.prlib.ru/news/659207"
+      - "ロシア大統領図書館掲載「Сельская жизнь」2026年9号・即位225周年記事 — https://www.prlib.ru/sites/default/files/u199869/selskaya_zhizn_no_9.pdf"

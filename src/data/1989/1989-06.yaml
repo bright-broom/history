@@ -4,7 +4,7 @@ events:
   - date: "1989-06-04"
     title: "天安門事件"
     category: "政治・経済"
-    description: "中国北京の天安門広場で民主化を求めるデモ隊に対し、人民解放軍が武力鎮圧を行った。死傷者数は不明だが、多くの市民が犠牲となった。"
+    description: "6月3日夜から4日にかけ、北京で軍が民主化などを求める抗議行動を武力で鎮圧した。天安門広場に通じる市内の道路などで市民に多数の死傷者が出た。正確な死者総数は明らかになっていない。"
     related_countries: ["中国"]
     sources:
-      - "国際報道記録"
+      - "Amnesty International「What really happened in the 1989 Tiananmen Square protests」 — https://www.amnesty.org.uk/knowledge-hub/all-resources/china-1989-tiananmen-square-protests-demonstration-massacre/"

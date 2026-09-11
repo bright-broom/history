@@ -2,10 +2,10 @@ month: 2
 year: 1904
 events:
   - date: "1904-02-08"
-    title: "日露戦争開戦"
+    title: "日露戦争の戦闘開始"
     category: "戦争・紛争"
-    description: "日本海軍が旅順港のロシア艦隊を奇襲攻撃し、日露戦争が開始された。満州と朝鮮半島における権益をめぐる両国の対立が戦争へと発展した。"
-    related_countries: ["日本", "ロシア", "朝鮮", "中国"]
+    description: "仁川沖で日本の水雷艇とロシアの砲艦コレーツが交戦した。アジア歴史資料センターはこの小競り合いを日露戦争における最初の交戦としている。日本の対露宣戦布告は2月10日だった。"
+    related_countries: ["日本","ロシア","朝鮮","中国"]
     sources:
-      - "日露戦争史"
-      - "坂の上の雲（参考）"
+      - "アジア歴史資料センター「仁川沖海戦」 — https://www.jacar.go.jp/exhibition/nichiro2/sensoushi/kaijou_02_detail.html"
+      - "国立国会図書館「史料にみる日本の近代・年表」 — https://www.ndl.go.jp/modern/utility/chronology.html"

@@ -4,24 +4,21 @@ events:
   - date: "1941-12-08"
     title: "真珠湾攻撃・太平洋戦争開戦"
     category: "戦争・紛争"
-    description: "日本海軍機動部隊がハワイの真珠湾を奇襲攻撃。同時にマレー半島への上陸作戦も開始され、太平洋戦争が始まった。アメリカ太平洋艦隊に大打撃を与えた。"
-    related_countries: ["日本", "アメリカ", "イギリス"]
+    description: "日本海軍がハワイの真珠湾にあるアメリカ海軍基地を奇襲した。現地では12月7日朝、日本では12月8日にあたる。日本によるアメリカとの戦争開始を示す出来事となった。"
+    related_countries: ["日本","アメリカ","イギリス"]
     sources:
-      - "太平洋戦争史"
-      - "真珠湾攻撃記録"
-
+      - "米国国立公園局「Battlefield O’ahu」 — https://www.nps.gov/perl/learn/historyculture/oahu.htm"
   - date: "1941-12-08"
     title: "マレー作戦開始"
     category: "戦争・紛争"
-    description: "日本軍がイギリス領マレーへの上陸作戦を開始。コタバルへの上陸は真珠湾攻撃より約1時間早く行われた。"
-    related_countries: ["日本", "イギリス", "マレーシア"]
+    description: "日本軍が英領マレー北部のコタバルとタイ南部に上陸し、マレー半島への侵攻を開始した。"
+    related_countries: ["日本","イギリス","マレーシア","タイ"]
     sources:
-      - "太平洋戦争史"
-
+      - "シンガポール国立図書館「From Sea to Road: Building the Causeway」 — https://biblioasia.nlb.gov.sg/all-sections/vol-16-issue-2-jul-sep-2020-causeway/"
   - date: "1941-12-10"
     title: "マレー沖海戦"
     category: "戦争・紛争"
-    description: "日本海軍航空隊がイギリス東洋艦隊の戦艦プリンス・オブ・ウェールズと巡洋戦艦レパルスを撃沈。航空機のみで行動中の戦艦を撃沈した史上初の戦闘となった。"
-    related_countries: ["日本", "イギリス"]
+    description: "マレー半島東岸のクアンタン沖で、日本軍の航空攻撃によりイギリスの戦艦プリンス・オブ・ウェールズと巡洋戦艦レパルスが沈没した。"
+    related_countries: ["日本","イギリス"]
     sources:
-      - "海戦史"
+      - "Imperial War Museums「HMS Repulse and HMS Prince Of Wales」 — https://memorials.iwm.org.uk/memorial/62968"
