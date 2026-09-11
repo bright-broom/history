@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { HistoryService, type IHistoryService } from '@/services/history-service';
+import { HistoryService, type IHistoryService, type HistoryCatalog, type YearOverview } from '@/services/history-service';
 import { FileSystemHistoryRepository } from '@/infrastructure/repositories/history-repository';
 import type { Year, Month, HistoryEvent, MonthData, YearData, Result } from '@/domain/types';
 import { isValidYear, isValidMonth, createYear, createMonth } from '@/domain/validation/validators';
@@ -77,4 +77,12 @@ export function parseYearParam(yearStr: string): Result<Year> {
  */
 export function parseMonthParam(monthStr: string): Result<Month> {
   return getService().parseMonthParam(monthStr);
+}
+
+export async function getCatalog(): Promise<HistoryCatalog> {
+  return getService().getCatalog();
+}
+
+export async function getYearOverview(year: Year): Promise<YearOverview | null> {
+  return getService().getYearOverview(year);
 }

@@ -6,14 +6,12 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import type { Month } from '@/domain/types';
+import type { YearPageParams } from '@/domain/types';
 import { t } from '@/config/i18n';
 import { parseYear } from '@/domain/validation/validators';
 import {
   getAvailableYears,
-  getYearData,
-  getAvailableMonths,
-  getAllMonthsForYear,
+  getYearOverview,
 } from '@/server/history';
 import {
   PageContainer,
@@ -24,11 +22,6 @@ import {
   MonthCard,
   EmptyState,
 } from '@/components/features';
-
-/** ページパラメータの型 */
-interface YearPageParams {
-  readonly year: string;
-}
 
 /** ページプロパティ */
 interface YearPageProps {
@@ -79,29 +72,16 @@ export default async function YearPage({
 
   const year = yearResult.data;
 
-  const [yearData, months, monthDataList, allYears] = await Promise.all([
-    getYearData(year),
-    getAvailableMonths(year),
-    getAllMonthsForYear(year),
+  const [overview, allYears] = await Promise.all([
+    getYearOverview(year),
     getAvailableYears(),
   ]);
+  if (!overview) notFound();
 
-  if (!yearData && months.length === 0) {
-    notFound();
-  }
-
-  const monthEventCounts = new Map<Month, number>();
-  monthDataList.forEach((monthData) => {
-    monthEventCounts.set(monthData.month, monthData.events.length);
-  });
-
-  const totalEvents = monthDataList.reduce(
-    (sum, m) => sum + m.events.length,
-    0
-  );
-
-  const hasMajorEvents =
-    yearData?.majorEvents && yearData.majorEvents.length > 0;
+  const { data: yearData, months, monthStatistics, totalEvents } = overview;
+  const monthEventCounts = new Map(monthStatistics.map(({ month, eventCount }) => [month, eventCount]));
+  const majorEvents = yearData?.majorEvents ?? [];
+  const hasMajorEvents = majorEvents.length > 0;
   const hasMonths = months.length > 0;
   const hasNoData = !hasMajorEvents && !hasMonths;
 
@@ -123,7 +103,7 @@ export default async function YearPage({
       {hasMajorEvents && (
         <Section title={t.section.majorEvents}>
           <div className="space-y-0" role="list">
-            {yearData.majorEvents!.map((event, index) => (
+            {majorEvents.map((event, index) => (
               <div key={`${event.date}-${index}`} role="listitem">
                 <EventCard event={event} compact />
               </div>

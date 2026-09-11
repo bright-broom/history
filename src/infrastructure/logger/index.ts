@@ -17,7 +17,6 @@ const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
 
 /** 現在の環境 */
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 /** 最小ログレベル（本番では warn 以上のみ） */
 const MIN_LOG_LEVEL: LogLevel = IS_PRODUCTION ? 'warn' : 'debug';

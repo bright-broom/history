@@ -8,6 +8,19 @@ import type { Year, Month, HistoryEvent, MonthData, YearData, YearStatistics, Mo
 import type { IHistoryRepository } from '@/domain/repositories/history-repository';
 import { parseYear, parseMonth } from '@/domain/validation/validators';
 
+/** Read models shared by page rendering and other callers. */
+export interface HistoryCatalog {
+  readonly years: readonly YearStatistics[];
+  readonly totalEvents: number;
+}
+
+export interface YearOverview {
+  readonly data: YearData | null;
+  readonly months: readonly Month[];
+  readonly monthStatistics: readonly MonthStatistics[];
+  readonly totalEvents: number;
+}
+
 /**
  * 歴史データサービスインターフェース
  */
@@ -19,6 +32,9 @@ export interface IHistoryService {
   getMonthData(year: Year, month: Month): Promise<MonthData | null>;
   getAllEventsForYear(year: Year): Promise<HistoryEvent[]>;
   getAllMonthsForYear(year: Year): Promise<MonthData[]>;
+
+  getCatalog(): Promise<HistoryCatalog>;
+  getYearOverview(year: Year): Promise<YearOverview | null>;
 
   // 統計
   getYearStatistics(year: Year): Promise<YearStatistics>;
@@ -116,14 +132,38 @@ export class HistoryService implements IHistoryService {
    * 全イベント数を取得
    */
   async getTotalEventCount(): Promise<number> {
+    return (await this.getCatalog()).totalEvents;
+  }
+
+  async getCatalog(): Promise<HistoryCatalog> {
     const years = await this.getAvailableYears();
-    const counts = await Promise.all(
-      years.map(async (year) => {
-        const events = await this.getAllEventsForYear(year);
-        return events.length;
-      })
-    );
-    return counts.reduce((sum, count) => sum + count, 0);
+    const statistics = await Promise.all(years.map((year) => this.getYearStatistics(year)));
+    return {
+      years: statistics,
+      totalEvents: statistics.reduce((sum, year) => sum + year.totalEvents, 0),
+    };
+  }
+
+  /** A year with an overview or any month file exists, even when it has no events. */
+  async getYearOverview(year: Year): Promise<YearOverview | null> {
+    const [data, months, monthData] = await Promise.all([
+      this.getYearData(year),
+      this.getAvailableMonths(year),
+      this.getAllMonthsForYear(year),
+    ]);
+    if (!data && months.length === 0) return null;
+
+    const monthStatistics = monthData.map((data) => ({
+      year,
+      month: data.month,
+      eventCount: data.events.length,
+    }));
+    return {
+      data,
+      months,
+      monthStatistics,
+      totalEvents: monthStatistics.reduce((sum, month) => sum + month.eventCount, 0),
+    };
   }
 
   /**

@@ -1,0 +1,1 @@
+Follow AGENTS.md, especially Code Review Rules. Review in Japanese, focusing on reproducible consequential defects. Avoid comments about formatting already checked by CI. Do not introduce additional workflows, paid APIs, automatic merges, or self-triggering fix loops. The presence of this file does not enable Copilot or authorize usage charges.

@@ -190,7 +190,7 @@ export function safeCompare(a: string, b: string): boolean {
   return result === 0;
 }
 
-export default {
+const security = {
   isSafeString,
   sanitizeString,
   isSafeStringArray,
@@ -205,3 +205,5 @@ export default {
   generateCsrfToken,
   safeCompare,
 };
+
+export default security;

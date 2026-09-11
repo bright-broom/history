@@ -85,12 +85,10 @@ function YearSelector({
   currentYear,
   availableYears,
   isActive,
-  hasMonth,
 }: {
   currentYear: Year;
   availableYears?: readonly Year[];
   isActive: boolean;
-  hasMonth: boolean;
 }) {
   const router = useRouter();
   const hasDropdown = availableYears && availableYears.length > 1;
@@ -271,7 +269,6 @@ export function Breadcrumbs({
               currentYear={currentYear}
               availableYears={availableYears}
               isActive={isYearPage ?? false}
-              hasMonth={!!currentMonth}
             />
           </BreadcrumbItemWrapper>
         )}

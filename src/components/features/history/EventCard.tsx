@@ -5,7 +5,7 @@
  * @module components/features/history/EventCard
  */
 
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import type { HistoryEvent } from '@/domain/types';
 import { t, formatDate } from '@/config/i18n';
 import { cn } from '@/lib/utils';
@@ -79,6 +79,7 @@ function EventCardComponent({
   className,
   compact = false,
 }: EventCardProps) {
+  const titleId = useId();
   const formattedDate = formatDate(event.date);
 
   return (
@@ -90,7 +91,7 @@ function EventCardComponent({
         className
       )}
       role="article"
-      aria-labelledby={`event-title-${event.date}-${event.title.slice(0, 10)}`}
+      aria-labelledby={titleId}
     >
       {/* メタ情報 */}
       <div className="flex items-center gap-4 mb-4 text-sm">
@@ -108,7 +109,7 @@ function EventCardComponent({
 
       {/* タイトル */}
       <h3
-        id={`event-title-${event.date}-${event.title.slice(0, 10)}`}
+        id={titleId}
         className="text-xl md:text-2xl font-semibold text-foreground leading-snug mb-4"
       >
         {event.title}

@@ -1,13 +1,8 @@
-import { FileSystemHistoryRepository } from '../src/infrastructure/repositories/history-repository';
+import { resolve } from 'node:path';
+import { DATA_DIR_PATH } from '../src/config/constants';
+import { validateHistoryData } from './lib/validate-history-data';
 
-const repository = new FileSystemHistoryRepository();
-async function main() {
-  const years = await repository.getAvailableYears();
-  let events = 0;
-  for (const year of years) {
-    await repository.getYearData(year);
-    events += (await repository.getAllEventsForYear(year)).length;
-  }
-  console.log(`Validated ${years.length} years and ${events} monthly events.`);
-}
-main().catch((error) => { console.error(error); process.exitCode = 1; });
+const root = process.argv[2] ? resolve(process.argv[2]) : resolve(...DATA_DIR_PATH);
+validateHistoryData(root)
+  .then(({ years, files, events }) => console.log(`Validated ${files} YAML files, ${years} years and ${events} monthly events.`))
+  .catch((error) => { console.error(error); process.exitCode = 1; });

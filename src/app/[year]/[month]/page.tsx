@@ -5,6 +5,7 @@
 
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { MonthPageParams } from '@/domain/types';
 
 import { t, getMonthName } from '@/config/i18n';
 import { parseYear, parseMonth } from '@/domain/validation/validators';
@@ -20,12 +21,6 @@ import {
   EventCard,
   EmptyState,
 } from '@/components/features';
-
-/** ページパラメータの型 */
-interface MonthPageParams {
-  readonly year: string;
-  readonly month: string;
-}
 
 /** ページプロパティ */
 interface MonthPageProps {

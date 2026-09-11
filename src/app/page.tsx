@@ -3,9 +3,8 @@
  * @module app/page
  */
 
-import type { Year } from '@/domain/types';
 import { t } from '@/config/i18n';
-import { getAvailableYears, getAllEventsForYear } from '@/server/history';
+import { getCatalog } from '@/server/history';
 import {
   PageContainer,
   PageHeader,
@@ -14,34 +13,13 @@ import {
   EmptyState,
 } from '@/components/features';
 
-/** 年別イベント数の型 */
-interface YearEventCount {
-  readonly year: Year;
-  readonly count: number;
-}
-
-/**
- * 年別のイベント数を並列取得
- */
-async function fetchYearEventCounts(years: Year[]): Promise<YearEventCount[]> {
-  const results = await Promise.all(
-    years.map(async (year) => {
-      const events = await getAllEventsForYear(year);
-      return { year, count: events.length };
-    })
-  );
-  return results;
-}
-
 /**
  * ホームページコンポーネント
  * 利用可能な年の一覧を表示
  */
 export default async function HomePage() {
-  const years = await getAvailableYears();
-  const yearEventCounts = await fetchYearEventCounts(years);
-
-  const totalEvents = yearEventCounts.reduce((sum, { count }) => sum + count, 0);
+  const { years: yearStatistics, totalEvents } = await getCatalog();
+  const years = yearStatistics.map(({ year }) => year);
   const hasData = years.length > 0;
 
   return (
@@ -60,9 +38,9 @@ export default async function HomePage() {
           role="list"
           aria-label="年一覧"
         >
-          {yearEventCounts.map(({ year, count }) => (
+          {yearStatistics.map(({ year, totalEvents }) => (
             <div key={year} role="listitem">
-              <YearCard year={year} eventCount={count} />
+              <YearCard year={year} eventCount={totalEvents} />
             </div>
           ))}
         </div>

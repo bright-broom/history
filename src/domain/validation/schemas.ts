@@ -51,11 +51,11 @@ export const eventCategorySchema = z.enum(EVENT_CATEGORIES);
  */
 export const historyEventSchema = z.object({
   date: dateStringSchema,
-  title: z.string().min(1, 'タイトルは必須です').max(200, 'タイトルは200文字以内である必要があります'),
-  category: z.string().min(1, 'カテゴリは必須です'),
-  description: z.string().min(1, '説明は必須です').max(2000, '説明は2000文字以内である必要があります'),
-  related_countries: z.array(z.string().min(1)).default([]),
-  sources: z.array(z.string().min(1)).optional(),
+  title: z.string().trim().min(1, 'タイトルは必須です').max(200, 'タイトルは200文字以内である必要があります'),
+  category: z.string().trim().min(1, 'カテゴリは必須です'),
+  description: z.string().trim().min(1, '説明は必須です').max(2000, '説明は2000文字以内である必要があります'),
+  related_countries: z.array(z.string().trim().min(1)).default([]),
+  sources: z.array(z.string().trim().min(1)).optional(),
 });
 
 /**
@@ -72,7 +72,7 @@ export const monthDataSchema = z.object({
  */
 export const yearDataSchema = z.object({
   year: yearSchema,
-  summary: z.string().max(1000, '概要は1000文字以内である必要があります').optional(),
+  summary: z.string().trim().min(1, '概要を指定する場合は空白以外の文字が必要です').max(1000, '概要は1000文字以内である必要があります').optional(),
   majorEvents: z.array(historyEventSchema).optional(),
 });
 

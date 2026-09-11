@@ -3,6 +3,8 @@
  * @module config/i18n
  */
 
+import { isValidDateString } from '@/domain/validation/validators';
+
 /** 月名の定義 */
 export const MONTH_NAMES = {
   ja: [
@@ -96,9 +98,11 @@ export function getMonthName(month: number, locale: keyof typeof MONTH_NAMES = C
  * @returns フォーマットされた日付文字列
  */
 export function formatDate(dateString: string, locale: string = CURRENT_LOCALE): string {
+  if (!isValidDateString(dateString)) return dateString;
   try {
     const date = new Date(dateString);
     return date.toLocaleDateString(locale, {
+      timeZone: 'UTC',
       year: 'numeric',
       month: 'long',
       day: 'numeric',

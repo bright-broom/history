@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: ja-JP
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: false
+  poem: false
+  review_status: false
+  path_filters:
+    - '!package-lock.json'
+    - '!docs/**'
+    - '!**/*.md'
+    - '!public/**'
+  auto_review:
+    enabled: false
+    auto_incremental_review: false
+    drafts: false
+    ignore_usernames: ['dependabot[bot]']
+  path_instructions:
+    - path: 'src/**'
+      instructions: '重大な不具合・セキュリティ・データ整合性に集中する。根拠と再現条件を示す。lintや好みの指摘は省く。AGENTS.mdのCode Review Rulesに従う。'
+chat:
+  auto_reply: false
