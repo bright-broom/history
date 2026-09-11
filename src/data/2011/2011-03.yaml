@@ -4,17 +4,15 @@ events:
   - date: "2011-03-11"
     title: "東日本大震災"
     category: "災害"
-    description: "三陸沖を震源とするマグニチュード9.0の巨大地震が発生。東北地方太平洋沿岸を大津波が襲い、死者・行方不明者約2万2千人の甚大な被害をもたらした。"
+    description: "14時46分、三陸沖でモーメントマグニチュード9.0の東北地方太平洋沖地震が発生し、宮城県栗原市で最大震度7を観測した。大津波が東北地方の太平洋沿岸などを襲い、広い範囲に甚大な被害をもたらした。"
     related_countries: ["日本"]
     sources:
-      - "内閣府防災情報"
-      - "気象庁記録"
-
+      - "気象庁「東日本大震災・地震の概要」 — https://www.jma.go.jp/jma/menu/jishin-portal.html"
+      - "気象庁「Information on the 2011 Great East Japan Earthquake」 — https://www.jma.go.jp/jma/en/2011_Earthquake/Information_on_2011_Earthquake.html"
   - date: "2011-03-12"
-    title: "福島第一原発事故"
+    title: "福島第一原発1号機で水素爆発"
     category: "災害"
-    description: "東日本大震災の津波により福島第一原子力発電所が被災。1号機で水素爆発が発生し、国際原子力事象評価尺度で最悪のレベル7と評価される事故に発展した。"
+    description: "前日の地震と津波で冷却機能を失った福島第一原子力発電所の1号機で、15時36分に原子炉建屋の水素爆発が発生した。政府は避難指示の対象を発電所から半径20km以内へ拡大した。"
     related_countries: ["日本"]
     sources:
-      - "東京電力事故報告書"
-      - "政府事故調査委員会報告"
+      - "環境省「放射線による健康影響等に関する統一的な基礎資料・第6章 事故の状況」（令和元年度版） — https://www.env.go.jp/chemi/rhm/kisoshiryo/pdf_r1/2019tk2s06.pdf"

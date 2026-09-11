@@ -4,7 +4,7 @@ events:
   - date: "1914-08-23"
     title: "日本、ドイツに宣戦布告"
     category: "戦争・紛争"
-    description: "日本は日英同盟に基づきドイツに宣戦布告し、第一次世界大戦に参戦。中国山東省のドイツ権益や南洋諸島を占領した。"
-    related_countries: ["日本", "ドイツ", "イギリス", "中国"]
+    description: "日本が日英同盟を理由にドイツへ宣戦布告し、第一次世界大戦に参戦した。"
+    related_countries: ["日本","ドイツ","イギリス","中国"]
     sources:
-      - "日本近代史"
+      - "国立公文書館「ドイツに宣戦布告する」 — https://www.archives.go.jp/ayumi/kobetsu/t03_1914_01.html"

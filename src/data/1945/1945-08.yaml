@@ -4,33 +4,30 @@ events:
   - date: "1945-08-06"
     title: "広島への原子爆弾投下"
     category: "戦争・紛争"
-    description: "アメリカ軍B-29爆撃機エノラ・ゲイが広島市に原子爆弾「リトルボーイ」を投下。人類史上初めて核兵器が実戦使用され、約14万人が年内に死亡した。"
-    related_countries: ["日本", "アメリカ"]
+    description: "8時15分、アメリカ軍が広島に原子爆弾を投下した。広島市は、放射線による急性障害を含め1945年12月末までの死者を約14万人と推計している。"
+    related_countries: ["日本","アメリカ"]
     sources:
-      - "広島原爆記録"
-      - "原爆被害報告書"
-
+      - "広島市水道局「原爆と広島市水道」 — https://www.water.city.hiroshima.lg.jp/site/siryou/9153.html"
+      - "広島市「死者数」 — https://www.city.hiroshima.lg.jp/atomicbomb-peace/fukko/1026918/1020948.html"
   - date: "1945-08-08"
-    title: "ソ連対日参戦"
+    title: "ソ連が日本に宣戦を通告"
     category: "戦争・紛争"
-    description: "ソビエト連邦が日本に宣戦布告。日ソ中立条約を破棄し、満州・朝鮮・樺太への侵攻を開始した。"
-    related_countries: ["日本", "ソ連", "中国"]
+    description: "モスクワでソ連が日本側に宣戦を通告した。通告は翌8月9日から日本と戦争状態に入るとする内容で、通告日と戦争状態の開始日を区別する必要がある。"
+    related_countries: ["日本","ソ連","中国"]
     sources:
-      - "第二次世界大戦史"
-
+      - "米国国務省「FRUS・ポツダム会談記録」文書1382脚注1（対日宣戦通告文） — https://history.state.gov/historicaldocuments/frus1945Berlinv02/d1382"
   - date: "1945-08-09"
     title: "長崎への原子爆弾投下"
     category: "戦争・紛争"
-    description: "アメリカ軍が長崎市に原子爆弾「ファットマン」を投下。約7万人が年内に死亡した。"
-    related_countries: ["日本", "アメリカ"]
+    description: "11時2分、長崎でアメリカ軍の原子爆弾「ファットマン」が炸裂した。長崎市の平和学習資料では、1945年12月末までの死者を73,884人と推定している（1950年7月発表の原爆資料保存委員会報告）。"
+    related_countries: ["日本","アメリカ"]
     sources:
-      - "長崎原爆記録"
-
+      - "長崎市「平和ナガサキ」小学生用・原子爆弾の投下とその被害（14–15頁） — https://nagasakipeace.jp/content/newconts/2021/06/heiwanagasaki_syougaku.pdf"
   - date: "1945-08-15"
-    title: "玉音放送・終戦"
+    title: "玉音放送"
     category: "政治・経済"
-    description: "昭和天皇がラジオ放送で終戦の詔書を朗読（玉音放送）。日本がポツダム宣言を受諾し、第二次世界大戦が終結した。"
-    related_countries: ["日本", "アメリカ", "イギリス", "中国", "ソ連"]
+    description: "正午、昭和天皇による「終戦の詔書」の朗読を録音した音声がラジオで放送された。前日に決定されたポツダム宣言の受諾が国民に伝えられた。"
+    related_countries: ["日本","アメリカ","イギリス","中国","ソ連"]
     sources:
-      - "終戦記録"
-      - "昭和史"
+      - "国立公文書館「ポツダム宣言を受諾する」 — https://www.archives.go.jp/ayumi/kobetsu/s20_1945_04.html"
+      - "国立公文書館「終戦の詔書」原本特別展示 — https://www.archives.go.jp/exhibition/jousetsu_08_08.html"

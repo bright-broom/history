@@ -2,10 +2,10 @@ month: 4
 year: 2020
 events:
   - date: "2020-04-07"
-    title: "日本初の緊急事態宣言発令"
+    title: "新型コロナウイルスに関する初の緊急事態宣言"
     category: "政治・経済"
-    description: "新型コロナウイルス感染症の拡大を受け、東京、神奈川、埼玉、千葉、大阪、兵庫、福岡の7都府県に緊急事態宣言が発令された。後に全国に拡大された。"
+    description: "政府が新型コロナウイルス感染症に関する緊急事態宣言を発出した。最初の対象は埼玉・千葉・東京・神奈川・大阪・兵庫・福岡の7都府県で、4月16日に全国へ拡大された。"
     related_countries: ["日本"]
     sources:
-      - "内閣官房発表"
-      - "官報"
+      - "首相官邸「新型コロナウイルス感染症緊急事態宣言に関する報告」2020年6月4日 — https://www.kantei.go.jp/jp/singi/novel_coronavirus/th_siryou/houkoku_r020604.pdf"
+      - "国立国会図書館「コロナショックと家計」3頁・脚注11 — https://dl.ndl.go.jp/view/download/digidepo_11537847_po_1112.pdf?contentNo=1"
