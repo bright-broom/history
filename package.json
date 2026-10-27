@@ -21,13 +21,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
-    "next": "^16.3.4",
+    "next": "^16.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.4.0",
     "yaml": "^2.8.2",
-    "zod": "^4.3.4"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
